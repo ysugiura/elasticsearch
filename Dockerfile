@@ -17,6 +17,7 @@ ADD run.sh /run.sh
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 ADD nginx_default /etc/nginx/sites-enabled/default
 RUN chmod +x /*.sh
+RUN exec /usr/share/elasticsearch/bin/plugin --install elasticsearch/elasticsearch-analysis-kuromoji/2.3.0
 
 EXPOSE 9200
 CMD ["/run.sh"]

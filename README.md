@@ -39,3 +39,8 @@ Use environment variables `ELASTICSEARCH_USER` and `ELASTICSEARCH_PASS` to speci
 Now you can connect to Elasticsearch by:
 
     curl admin:mypass@127.0.0.1:9200
+
+About this fork
+---------------
+
+Kuromoji plugin for elasticsearch is installed during the build.
