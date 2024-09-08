@@ -7,11 +7,11 @@ https://ap-northeast-1.console.aws.amazon.com/ecr/repositories/private/188950198
 ## How to build and push a new image
 
 ```
-sh deploy_image.sh TAG
+sh scripts/deploy_image.sh TAG
 ```
 
 Example:
 
 ```
-sh deploy_image.sh 1.2.1
+sh scripts/deploy_image.sh 1.2.1
 ```
