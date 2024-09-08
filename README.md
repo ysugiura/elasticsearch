@@ -4,14 +4,25 @@
 
 https://ap-northeast-1.console.aws.amazon.com/ecr/repositories/private/188950198779/activewave/elasticsearch?region=ap-northeast-1
 
+
+## How to run tests
+
+```
+$ source .venv/bin/activate
+(.venv) $ pip install -r test_requirements.txt
+(.venv) $ pytest
+```
+
 ## How to build and push a new image
 
 ```
-sh scripts/deploy_image.sh TAG
+$ sh scripts/deploy_image.sh TAG
 ```
 
 Example:
 
 ```
-sh scripts/deploy_image.sh 1.2.1
+$ scripts/deploy_image.sh 2.0.0
 ```
+
+

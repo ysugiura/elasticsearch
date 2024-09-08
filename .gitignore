@@ -1,0 +1,7 @@
+# common
+.env
+*.bak
+*.pyc
+*.swp
+.swo
+.venv
