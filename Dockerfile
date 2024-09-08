@@ -1,14 +1,18 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:8.5.0
 
+# Switch to root user temporarily to install plugins and adjust permissions
 USER root
 
 # Install plugins
 RUN bin/elasticsearch-plugin install analysis-icu \
     && bin/elasticsearch-plugin install analysis-kuromoji
 
-# Ensure the data directory exists and set the correct ownership
+# Set the correct ownership for the data directory
 RUN mkdir -p /usr/share/elasticsearch/data \
-    && chown -R 1000:1000 /usr/share/elasticsearch/data
+    && chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data
+
+# Switch back to the elasticsearch user to avoid ownership issues
+USER elasticsearch
 
 # Set environment variables
 ENV discovery.type=single-node
