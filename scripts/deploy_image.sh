@@ -30,7 +30,7 @@ authenticate_ecr() {
 authenticate_ecr
 
 # Create the repository (if it doesn't exist)
-echo "Creating the repository $REPOSITORY_NAME..."
+echo "Building the Docker image $REPOSITORY_NAME:$IMAGE_VERSION..."
 aws ecr create-repository --repository-name $REPOSITORY_NAME --region $REGION --profile $PROFILE || echo "Repository $REPOSITORY_NAME already exists."
 
 # Build the Docker image
@@ -68,5 +68,6 @@ push_image() {
 
 # Attempt to push the image
 push_image
-
+echo "Cleaning up unused Docker images..."
+docker image prune -f
 echo "Docker image $REPOSITORY_NAME:$IMAGE_VERSION has been pushed successfully."
