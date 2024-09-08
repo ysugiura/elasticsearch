@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.5.0
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.23
 
 # Switch to root user temporarily to install plugins and adjust permissions
 USER root
