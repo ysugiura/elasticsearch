@@ -1,0 +1,13 @@
+# This file is for tests
+services:
+  elasticsearch:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - network.host=0.0.0.0 
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
