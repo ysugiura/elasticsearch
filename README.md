@@ -15,14 +15,19 @@ $ source .venv/bin/activate
 
 ## How to build and push a new image
 
+Pushing to dockerhub:
 ```
-$ sh scripts/deploy_image.sh TAG
+$ sh scripts/deploy_image_to_dockerhub.sh TAG
+```
+
+Pushing to AWS ECR:
+```
+$ sh scripts/deploy_image_to_ecr.sh TAG
 ```
 
 Example:
-
 ```
-$ scripts/deploy_image.sh 2.0.0
+$ scripts/deploy_image_to_dockerhub.sh 2.0.0
 ```
 
 
