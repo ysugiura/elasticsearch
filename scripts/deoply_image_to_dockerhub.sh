@@ -27,24 +27,23 @@ authenticate_dockerhub() {
 # Authenticate to Docker Hub
 authenticate_dockerhub
 
-# Build the Docker image
-echo "Building the Docker image $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION..."
-docker build -t $DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION .
+# Ensure docker buildx is set up
+echo "Setting up Docker buildx..."
+docker buildx create --use || true # Create and switch to buildx builder if not already created
+
+# Build the Docker image for multiple platforms (amd64, arm64)
+echo "Building the Docker image $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION for multiple platforms..."
+docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION --push .
 if [ $? -ne 0 ]; then
   echo "Failed to build the Docker image."
   exit 1
 fi
 
-# Tag the image for Docker Hub
-echo "Tagging the image for Docker Hub as: $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION"
-docker tag $DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION
-docker tag $DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:latest
-
-# Push the image to Docker Hub
-echo "Pushing the image to Docker Hub: $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION"
-docker push $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION
+# Tag the image for Docker Hub as 'latest'
+echo "Tagging the image for Docker Hub as: $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:latest"
+docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY_NAME:latest --push .
 if [ $? -ne 0 ]; then
-  echo "Failed to push the Docker image to Docker Hub."
+  echo "Failed to tag and push the Docker image to Docker Hub."
   exit 1
 fi
 
@@ -52,4 +51,4 @@ fi
 echo "Cleaning up unused Docker images..."
 docker image prune -f
 
-echo "Docker image $DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION has been pushed successfully to Docker Hub."
+echo "Docker image $DOCKERHUB_REPOSITORY_NAME:$IMAGE_VERSION has been successfully built and pushed to Docker Hub."
