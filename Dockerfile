@@ -1,14 +1,15 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.23
 
-# Install plugins as the elasticsearch user (default user)
+# Install plugins as the elasticsearch user
+USER elasticsearch
 RUN bin/elasticsearch-plugin install analysis-icu \
     && bin/elasticsearch-plugin install analysis-kuromoji
-
-# Set environment variables
-ENV discovery.type=single-node
 
 # Expose the default Elasticsearch port
 EXPOSE 9200
 
-# Start Elasticsearch
-CMD ["bin/elasticsearch"]
+# Add a healthcheck to monitor Elasticsearch status
+HEALTHCHECK --interval=30s --timeout=10s --retries=5 CMD curl -f http://localhost:9200/_cluster/health || exit 1
+
+# Start Elasticsearch with the discovery.type setting as a command-line argument
+CMD ["bin/elasticsearch", "-Ediscovery.type=single-node"]
