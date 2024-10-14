@@ -1,7 +1,6 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.23
 
 # Install plugins as the elasticsearch user
-USER elasticsearch
 RUN bin/elasticsearch-plugin install analysis-icu \
     && bin/elasticsearch-plugin install analysis-kuromoji
 
